@@ -18,7 +18,7 @@
             } else { 
             $dados = array(
                 "tipo" => 'error',
-                "mensagem" => 'Não foi possível localizar a categpria'
+                "mensagem" => 'Não foi possível localizar a categoria'
             );
             }
             mysqli_close($conexao);
