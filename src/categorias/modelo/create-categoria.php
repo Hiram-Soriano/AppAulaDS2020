@@ -3,7 +3,7 @@ include('../../banco/conexao.php');
 if(!$conexao){
     $dados = array(
         'tipo' => 'info',
-        'mensagem' => 'OPS, não foi possível obter uma conexão com o banco de dados, tente mais tarde..'
+        'mensagem' => 'Não foi possível obter uma conexão com o banco de dados, tente mais tarde..'
     );
 } else{
     $requestData = $_REQUEST;
@@ -16,8 +16,9 @@ if(!$conexao){
         $requestData['ativo'] = $requestData['ativo'] == "on" ? "S" : "N";
         $date = date_create_from_format('d/m/Y H:i:s', $requestData['dataagora']);
         $requestData['dataagora'] = date_format($date, 'Y-m-d H:i:s');
+
         $sqlComando = "INSERT INTO categorias (nome, ativo, datacriacao, datamodificacao)
-         VALUES ('$requestData[nome]', '$requestData[ativo]', '$requestData[dataagora]', '$requestData[dataagora]')";
+         VALUES (UCASE('$requestData[nome]'), '$requestData[ativo]', '$requestData[dataagora]', '$requestData[dataagora]')";
          $resultado = mysqli_query($conexao, $sqlComando);
          if($resultado){
             $dados = array(
@@ -33,4 +34,4 @@ if(!$conexao){
     }
     mysqli_close($conexao);
 }
-echo json_encode($dados);
+echo json_encode($dados, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

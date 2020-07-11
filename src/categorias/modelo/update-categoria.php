@@ -1,36 +1,41 @@
 <?php
-include('../../banco/conexao.php');
-if(!$conexao){
-    $dados = array(
-        'tipo' => 'info',
-        'mensagem' => 'OPS, não foi possível obter uma conexão com o banco de dados, tente mais tarde..'
-    );
-} else{
-    $requestData = $_REQUEST;
-    if(empty($requestData['nome']) || empty($requestData['ativo']) ){
-        $dados = array(
-            'tipo' => 'info',
-            'mensagem' => 'Existe(m) campo(s) obrigatório(s) vazio(s).'
-        );
-    } else {
-        $id = isset($requestData['idcategoria']) ? $requestData['idcategoria'] : '';
-        $requestData['ativo'] = $requestData['ativo'] == "on" ? "S" : "N";
-        $date = date_create_from_format('d/m/Y H:i:s', $requestData['dataagora']);
-        $requestData['dataagora'] = date_format($date, 'Y-m-d H:i:s');
-        $sqlComando = "UPDATE categorias SET nome = '$requestData[nome]', ativo = '$requestData[ativo]', datamodificacao = '$requestData[dataagora]'  WHERE idcategoria = $id ";
-        $resultado = mysqli_query($conexao, $sqlComando);
-         if($resultado){
+    include('../../banco/conexao.php');
+    if($conexao){
+        $requestData = $_REQUEST;
+        if(empty($requestData['nome']) || empty($requestData['ativo'])){
             $dados = array(
-                'tipo' => 'success',
-                'mensagem' => 'Categoria alterada com sucesso.'
+                "tipo" => "info",
+                "mensagem" => "Existe(m) campo(s) obrigatório(s) em branco."
             );
         } else{
-            $dados = array(
-                'tipo' => 'error',
-                'mensagem' => 'Não foi possível alterar a categoria.'.mysqli_error($conexao)
-            );
+            $id = isset($requestData['idcategoria']) ? $requestData['idcategoria'] : '';
+            $requestData['ativo'] = $requestData['ativo'] == "on" ? "S" : "N";
+            $date = date_create_from_format('d/m/Y H:i:s', $requestData['dataagora']);
+            $requestData['dataagora'] = date_format($date, 'Y-m-d H:i:s');
+
+            $sql = "UPDATE categorias SET nome = UCASE('$requestData[nome]'), ativo = '$requestData[ativo]', datamodificacao = '$requestData[dataagora]' WHERE idcategoria = $id ";
+            $resultado = mysqli_query($conexao, $sql);
+
+            if($resultado){
+                $dados = array(
+                    "tipo" => "success",
+                    "mensagem" => "Categoria alterada com sucesso."
+                );
+            } else {
+                $dados = array(
+                    "tipo" => "error",
+                    "mensagem" => "Não foi possível altarar a categoria."
+                );
+            }
         }
+
+        mysqli_close($conexao);
+
+    } else {
+        $dados = array(
+            "tipo" => "info",
+            "mensagem" => "Ops... não foi possível conectar ao banco de dados"
+        );
     }
-    mysqli_close($conexao);
-}
-echo json_encode($dados);
+
+   echo json_encode($dados, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); 

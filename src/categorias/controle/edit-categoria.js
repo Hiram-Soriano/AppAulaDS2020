@@ -1,9 +1,10 @@
 $(document).ready(function() {
-    $('#table-categoria').on('click', 'button.btn-view', function(e) {
+
+    $('#table-categoria').on('click', 'button.btn-edit', function(e) {
         e.preventDefault()
         $('.modal-title').empty()
         $('.modal-body').empty()
-        $('.modal-title').append('Visualização de categoria')
+        $('.modal-title').append('Edição de categoria')
         let idcategoria = `idcategoria=${$(this).attr('id')}`
         $.ajax({
             type: 'POST',
@@ -15,15 +16,14 @@ $(document).ready(function() {
                 if (dado.tipo == "success") {
                     $('.modal-body').load('src/categorias/visao/form-categoria.html', function() {
                         $('#nome').val(dado.dados.nome)
-                        $('#nome').attr('readonly', 'true')
                         $('#dataagora').val(dado.dados.datacriacao)
                         if (dado.dados.ativo == "N") {
                             $('#ativo').removeAttr('checked')
                         }
-                        $('#ativo').attr('readolnly', 'true')
+                        $('#idcategoria').val(dado.dados.idcategoria)
                     })
                     $('.btn-save').hide()
-                    $('.btn-update').hide()
+                    $('.btn-update').show()
                     $('#modal-categoria').modal('show')
                 } else {
                     Swal.fire({
@@ -36,6 +36,5 @@ $(document).ready(function() {
                 }
             }
         })
-
     })
 })

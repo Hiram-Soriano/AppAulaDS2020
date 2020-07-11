@@ -11,6 +11,8 @@ $(document).ready(function() {
             text: 'Deseja realmente excluir esse registro?',
             type: 'question',
             showCancelButton: true,
+            cancelButtonColor: "#FF0000", 
+            confirmButtonColor: "#1C1C1C", 
             confirmButtonText: 'Sim',
             cancelButtonText: 'Não'
         }).then((result) => {
@@ -27,6 +29,7 @@ $(document).ready(function() {
                             title: 'appAulaDS',
                             text: dados.mensagem,
                             type: dados.tipo,
+                            confirmButtonColor: "#008000",
                             confirmButtonText: 'OK'
                         })
 

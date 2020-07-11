@@ -6,9 +6,10 @@ $(document).ready(function() {
         $('.modal-title').append('Adicionar nova categoria')
         const datacriacao = new Date().toLocaleString()
         $('.modal-body').load('src/categorias/visao/form-categoria.html', function() {
-        $('#dataagora').val(datacriacao)
+            $('#dataagora').val(datacriacao)
         })
         $('.btn-save').show()
+        $('.btn-update').hide()
         $('#modal-categoria').modal('show')
     })
 })
