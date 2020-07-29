@@ -1,10 +1,9 @@
 $(document).ready(function() {
 
-    $('#table-categoria').on('click', 'button.btn-delete', function(e) {
-
+    $('#table-cliente').on('click', 'button.btn-delete', function(e) {
         e.preventDefault()
 
-        let idcategoria = `idcategoria=${$(this).attr('id')}`
+        let idcliente = `idcliente=${$(this).attr('id')}`
 
         Swal.fire({
             title: 'appAulaDS',
@@ -15,31 +14,28 @@ $(document).ready(function() {
             confirmButtonColor: "#1C1C1C", 
             confirmButtonText: 'Sim',
             cancelButtonText: 'Não'
-        }).then((result) => {
+        }).then((result => {
             if (result.value) {
-
                 $.ajax({
-                    title: 'appAulaDS',
                     type: 'POST',
                     dataType: 'json',
-                    async: true,
-                    data: idcategoria,
-                    url: 'src/categorias/modelo/delete-categoria.php',
+                    assync: true,
+                    data: idcliente,
+                    url: 'src/clientes/modelo/delete-cliente.php',
                     success: function(dados) {
                         Swal.fire({
                             title: 'appAulaDS',
                             text: dados.mensagem,
                             type: dados.tipo,
-                            confirmButtonColor: "#008000",
+                            confirmButtonColor: "#1C1C1C", 
                             confirmButtonText: 'OK'
                         })
 
-                        $('#table-categoria').DataTable().ajax.reload()
+                        $('#modal-cliente').modal('hide')
+                        $('#table-cliente').DataTable().ajax.reload()
                     }
                 })
             }
-        })
-
+        }))
     })
-
 })

@@ -9,6 +9,7 @@ $(document).ready(function() {
             }
         })
         $.ajax({
+            title: 'appAulaDS',
             type: 'POST',
             dataType: 'json',
             assync: true,
